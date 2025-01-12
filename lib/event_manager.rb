@@ -30,6 +30,7 @@ def legislators_by_zipcode(zip)
 end
 
 contents = CSV.open('event_attendees.csv', headers: true, header_converters: :symbol)
+template_letter = File.read('form_letter.html')
 contents.each do |row|
   name = row [:first_name]
 
@@ -37,7 +38,10 @@ contents.each do |row|
 
   legislators = legislators_by_zipcode(zipcode)
 
-  puts "#{name} #{zipcode} #{legislators}"
+  personal_letter = template_letter.gsub('FIRST_NAME', name)
+  personal_letter.gsub!('LEGISLATORS', legislators)
 
-  template_letter = File.read('form_letter.html')
+  puts personal_letter
+
+
 end
